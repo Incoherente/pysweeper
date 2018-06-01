@@ -1,5 +1,4 @@
 import Game.Tablero as gt
-from numpy import *
 
 class Main:
 
@@ -12,15 +11,15 @@ if __name__ == '__main__':
     print('hola hola')
     print("hola2")
 
-    tablero = gt.Tablero(10, 20)
+    tablero = gt.Tablero(10, 10, 2)
+    tablero.colocar_minas(tablero.num_minas)
+    tablero.print_s_tablero()
 
-    tablero.print_s_tablero();
+    tablero.set_tablero_visible()
 
-    tablero.print_v_tablero();
+    tablero.print_v_tablero()
 
-    tablero.set_tablero_visible();
-
-    tablero.print_v_tablero();
+    print(tablero.num_minas)
 
 """
     a = array([['Roy', 80, 75, 85, 90, 95],
