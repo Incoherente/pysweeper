@@ -1,4 +1,3 @@
-import numpy;
 import random
 
 # La clase Tablero es el tablero del buscaminas:
@@ -25,6 +24,7 @@ import random
 # 2: Intermedio: Número de minas (X + Y*2)
 # 3: Difícil: (X + Y*3)
 
+
 class Tablero:
     # constructor del tablero. Se construye a partir de dos dimensiones dadas por parámetro.
 
@@ -46,11 +46,11 @@ class Tablero:
     def print_s_tablero(self):
         print('SOURCE_TABLERO')
         len_x = len(self.s_tablero)
-#        len_y = len(self.s_tablero[0])
+        len_y = len(self.s_tablero[0])
         for i in range(len_x):
-            print(self.s_tablero[i])
-        #       for index_y in self.dimension_y:
-        #           print '|', self.board[index_x][index_y]
+            for j in range(len_y):
+                print(self.s_tablero[i][j], end=" ")
+            print()
 
     def print_v_tablero(self):
         print('VISUAL TABLERO')
@@ -82,11 +82,10 @@ class Tablero:
         else:
             print("Error al seleccionar la dificultad"
                   "Se establece dificultad intermedia")
-            self.dificultad == 2
             num_minas = int(len_x + len_y * 2)
         return num_minas
 
-    def colocar_minas (self, num_minas):
+    def colocar_minas(self, num_minas):
         len_x = len(self.s_tablero)
         len_y = len(self.s_tablero[0])
         while num_minas > 0:
@@ -94,11 +93,162 @@ class Tablero:
                 for j in range(len_y):
                     if num_minas > 0 and self.s_tablero[i][j] == 0:
                         if random.randint(0, 100) > 80:
-                            self.s_tablero[i][j] = 'M'
+                            self.s_tablero[i][j] = chr(77)
                             num_minas -= 1
 
+    def coloca_numeros(self):
+        len_x = len(self.s_tablero)
+        len_y = len(self.s_tablero[0])
+        for i in range(len_x):
+            for j in range(len_y):
+               # print(str(i)+" "+str(j))
+                total = 0
+                if self.s_tablero[i][j] != chr(77):
+                    if i == 0:
+                        if j == 0:    # ESQUINA SUPERIOR IZQUIERDA
+                            total += self.comprueba_esi(i, j)
+                        elif j > 0 and j < len_y - 1:  # BORDE SUPERIOR
+                            total += self.comprueba_bs(i, j)
+                        elif j == len_y - 1:   # ESQUINA SUPERIOR DERECHA
+                            total += self.comprueba_esd(i, j)
+                    elif i < len_x - 1:
+                        if j == 0:              # BORDE IZQUIERDO
+                            total += self.comprueba_bi(i, j)
+                        elif j > 0 and j < len_y - 1:       # CENTRO
+                            total += self.comprueba_centro(i, j)
+                        elif j == len_y -1:        #BORDE DERECHO
+                            total += self.comprueba_bd(i, j)
+                    elif i == len_x - 1:
+                        if j == 0:  # ESQUINA INFERIOR IZQUIERDA
+                            total += self.comprueba_eii(i, j)
+                        elif j > 0 and j < len_y - 1:  # BORDE INFERIOR
+                            total += self.comprueba_bin(i, j)
+                        elif j == len_y - 1 :  # ESQUINA INFERIOR DERECHA
+                            total += self.comprueba_eid(i, j)
+                    self.s_tablero[i][j] = total
 
 
 
+    # Compureba la [E]squina [S]Superior [I]Izquierda
+    def comprueba_esi(self, i, j):
+        total = 0
+        if self.s_tablero[i][j + 1] == chr(77):
+            total += 1
+        if self.s_tablero[i + 1][j + 1] == chr(77):
+            total += 1
+        if self.s_tablero[i + 1][j - 1] == chr(77):
+            total += 1
+        return total
 
+    # Comprueba Esquina Inferior Izquierda
+    def comprueba_eii(self, i, j):
+        total = 0
+        if self.s_tablero[i - 1][j] == chr(77):
+            total += 1
+        if self.s_tablero[i-1][j+1] == chr(77):
+            total += 1
+        if self.s_tablero[i][j + 1] == chr(77):
+            total += 1
+        return total
 
+    # Comprueba Esquina Superior Derecha
+    def comprueba_esd(self, i, j):
+        total = 0
+        if self.s_tablero[i][j - 1] == chr(77):
+            total += 1
+        if self.s_tablero[i + 1][j-1] == chr(77):
+            total += 1
+        if self.s_tablero[i + 1][j] == chr(77):
+            total += 1
+        return total
+
+    # Comprueba Esquina Inferior Derecha
+    def comprueba_eid(self, i, j):
+        total = 0
+        if self.s_tablero[i][j - 1] == chr(77):
+            total += 1
+        if self.s_tablero[i - 1][j - 1] == chr(77):
+            total += 1
+        if self.s_tablero[i - 1][j] == chr(77):
+            total += 1
+        return total
+
+    # Comprueba Borde Izquierdo
+    def comprueba_bi(self, i, j):
+        total = 0
+        if self.s_tablero[i-1][j] == chr(77):
+            total += 1
+        if self.s_tablero[i-1][j+1] == chr(77):
+            total += 1
+        if self.s_tablero[i][j+1] == chr(77):
+            total += 1
+        if self.s_tablero[i+1][j+1] == chr(77):
+            total += 1
+        if self.s_tablero[i+1][j] == chr(77):
+            total += 1
+        return total
+
+    # Comprueba Borde Derecho
+    def comprueba_bd(self, i, j):
+        total = 0
+        if self.s_tablero[i - 1][j] == chr(77):
+            total += 1
+        if self.s_tablero[i - 1][j - 1] == chr(77):
+            total += 1
+        if self.s_tablero[i][j - 1] == chr(77):
+            total += 1
+        if self.s_tablero[i + 1][j - 1] == chr(77):
+            total += 1
+        if self.s_tablero[i + 1][j] == chr(77):
+            total += 1
+        return total
+
+    # Comprueba Borde Superior
+    def comprueba_bs(self, i, j):
+        total = 0
+        if self.s_tablero[i][j-1] == chr(77):
+            total += 1
+        if self.s_tablero[i + 1][j - 1] == chr(77):
+            total += 1
+        if self.s_tablero[i + 1][j] == chr(77):
+            total += 1
+        if self.s_tablero[i + 1][j + 1] == chr(77):
+            total += 1
+        if self.s_tablero[i][j+1] == chr(77):
+            total += 1
+        return total
+
+    # Comprueba Borde Inferior
+    def comprueba_bin(self, i, j):
+        total = 0
+        if self.s_tablero[i][j-1] == chr(77):
+            total += 1
+        if self.s_tablero[i - 1][j - 1] == chr(77):
+            total += 1
+        if self.s_tablero[i - 1][j] == chr(77):
+            total += 1
+        if self.s_tablero[i - 1][j + 1] == chr(77):
+            total += 1
+        if self.s_tablero[i][j+1] == chr(77):
+            total += 1
+        return total
+
+    def comprueba_centro(self, i, j):
+        total = 0
+        if self.s_tablero[i][j-1] == chr(77):
+            total += 1
+        if self.s_tablero[i - 1][j - 1] == chr(77):
+            total += 1
+        if self.s_tablero[i - 1][j] == chr(77):
+            total += 1
+        if self.s_tablero[i - 1][j + 1] == chr(77):
+            total += 1
+        if self.s_tablero[i][j+1] == chr(77):
+            total += 1
+        if self.s_tablero[i + 1][j+1] == chr(77):
+            total += 1
+        if self.s_tablero[i + 1][j] == chr(77):
+            total += 1
+        if self.s_tablero[i + 1][j - 1] == chr(77):
+            total += 1
+        return total

@@ -8,11 +8,11 @@ class Main:
 
 if __name__ == '__main__':
 
-    print('hola hola')
-    print("hola2")
-
-    tablero = gt.Tablero(10, 10, 2)
+    print(ord('M'))
+    tablero = gt.Tablero(10, 10, 3)
     tablero.colocar_minas(tablero.num_minas)
+    tablero.print_s_tablero()
+    tablero.coloca_numeros()
     tablero.print_s_tablero()
 
     tablero.set_tablero_visible()
