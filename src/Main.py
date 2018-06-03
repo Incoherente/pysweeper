@@ -1,35 +1,44 @@
 import Game.Tablero as gt
 
+
 class Main:
 
     def __init__(self):
         self.partida_ganada = False
-        self.partida_perdida = False
+
 
 if __name__ == '__main__':
 
-    print(ord('M'))
-    tablero = gt.Tablero(10, 10, 3)
+    tablero = gt.Tablero(10, 10, 2)
     tablero.colocar_minas(tablero.num_minas)
-    tablero.print_s_tablero()
     tablero.coloca_numeros()
-    tablero.print_s_tablero()
+    turno = 0
+    print("========================================")
+    print("======== BIENVENIDO A PYSWEEPER ========")
+    print("========================================")
 
-    tablero.set_tablero_visible()
+    while True:
 
-    tablero.print_v_tablero()
+        print("Turno ", turno)
+        str_x, str_y = input("Inserte la altura y anchura de la casilla "
+                             "a descubrir separada por comas\n").split(',')
+        posicion_x = int(str_x)
+        posicion_y = int(str_y)
+        tablero.v_tablero[posicion_x][posicion_y] = 1
+        if tablero.s_tablero[posicion_x][posicion_y] == chr(77):
+            print("Has pisado una mina en la posición ", posicion_x, ", ", posicion_y, " :,( ")
+            tablero.set_tablero_visible()
+            tablero.print_s_tablero()
+            break
 
-    print(tablero.num_minas)
+        if tablero.comprueba_ganada():
+            print("HAS GANADO!!!!!  :D")
+            tablero.set_tablero_visible()
+            tablero.print_s_tablero()
+            break
 
-"""
-    a = array([['Roy', 80, 75, 85, 90, 95],
-               ['John', 75, 80, 75, 85, 100],
-               ['Dave', 80, 80, 80, 90, 95]])
-    a = delete(a, [1], 0)
-    print(a)
-"""
-
-#print("Partida ganada {}.".format(True))
+        tablero.print_s_tablero()
+        turno += 1
 
 
 

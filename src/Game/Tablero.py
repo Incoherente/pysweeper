@@ -44,12 +44,31 @@ class Tablero:
         self.num_minas = self.calcular_minas()
 
     def print_s_tablero(self):
-        print('SOURCE_TABLERO')
+
         len_x = len(self.s_tablero)
         len_y = len(self.s_tablero[0])
         for i in range(len_x):
+            if i == 0:
+                print("", end="   ")
+                for k in range(len_y):
+                    print(k, end=" ")
+                print()
+                if i < 10:
+                    print("", end="   ")
+                elif i >= 10:
+                    print("", end="    ")
+                for k in range(len_y):
+                    print("_", end=" ")
+                print()
+            if i < 10:
+                print(i, end=" | ")
+            elif i >= 10:
+                print(i, end="| ")
             for j in range(len_y):
-                print(self.s_tablero[i][j], end=" ")
+                if self.v_tablero[i][j] == 1:
+                    print(self.s_tablero[i][j], end=" ")
+                else:
+                    print("?", end=" ")
             print()
 
     def print_v_tablero(self):
@@ -252,3 +271,16 @@ class Tablero:
         if self.s_tablero[i + 1][j - 1] == chr(77):
             total += 1
         return total
+
+    def comprueba_ganada(self):
+        len_x = len(self.s_tablero)
+        len_y = len(self.s_tablero[0])
+        ganada = True
+
+        for i in range(len_x):
+            for j in range(len_y):
+                if self.v_tablero[i][j] == 0:
+                    if self.s_tablero[i][j] != chr(77):
+                        ganada = False
+        return ganada
+
