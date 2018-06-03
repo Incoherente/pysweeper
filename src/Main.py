@@ -15,7 +15,7 @@ if __name__ == '__main__':
     turno = 0
     print("========================================")
     print("======== BIENVENIDO A PYSWEEPER ========")
-    print("========================================")
+    print("===== Próximamente con botoncitos ======")
 
     while True:
 
